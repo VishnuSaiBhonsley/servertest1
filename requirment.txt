@@ -1,0 +1,13 @@
+pip install PyPDF2 langchain pdfplumber
+pip install python-dotenv  # For environment variables
+pip install langchain-chroma
+pip install langchain-community langchain-core
+pip install langchain-text-splitters
+pip install --upgrade langchain
+pip install -qU langchain-community faiss-cpu
+pip install flask
+pip install -U langchain-google-genai
+pip install Flask-Cors
+pip install cohere
+pip install transformers
+pip install torch
