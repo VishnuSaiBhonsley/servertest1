@@ -1,124 +1,186 @@
 * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-  }
-  
-  body {
-    font-family: Arial, sans-serif;
-    background-color: white;
-    position: relative;
-    height: 100vh;
-  }
-  
-  .chat-container {
-    width: 300px;
-    height: 600px;
-    background-color: white;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    display: none; /* Initially hidden */
-    position: fixed; /* Fixed position */
-    bottom: 70px; /* Distance from the bottom */
-    right: 30px; /* Distance from the right */
-    flex-direction: column;
-    z-index: 1000; /* Ensure chatbot is on top */
-  }
-  
-  .chat-box {
-    flex-grow: 1;
-    padding: 20px;
-    overflow-y: auto;
-    border-bottom: 1px solid #ddd;
-  }
-  
-  .chat-message {
-    margin: 10px 0;
-    padding: 10px;
-    border-radius: 10px;
-    max-width: 80%;
-    clear: both; /* Clear floats */
-  }
-  
-  .bot {
-    background-color: #e1f5fe;
-    align-self: flex-end; /* Align bot messages to the right */
-    margin-right: auto; /* Push to right */
-    
-  }
-  
-  .user {
-    background-color: #c8e6c9;
-    align-self: flex-start; /* Align user messages to the left */
-    margin-left: auto; /* Push to right */
-  }
-  
-  .chat-options {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    margin-top: 10px;
-  }
-  
-  .option-button {
-    padding: 8px 15px; /* Smaller buttons */
-    font-size: 14px;
-    border: none;
-    background-color: #03a9f4;
-    color: white;
-    border-radius: 15px;
-    cursor: pointer;
-    margin: 5px 0;
-    width: auto;
-    text-align: left;
-  }
-  
-  .option-button:hover {
-    background-color: #0288d1;
-  }
-  
-  .chat-input {
-    padding: 10px;
-    display: flex;
-    border-top: 1px solid #ddd;
-  }
-  
-  .chat-input input {
-    flex-grow: 1;
-    padding: 10px;
-    border: none;
-    border-radius: 20px;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-  }
-  
-  .chat-input button {
-    padding: 10px 20px;
-    border: none;
-    background-color: #03a9f4;
-    color: white;
-    border-radius: 20px;
-    margin-left: 10px;
-    cursor: pointer;
-  }
-  
-  .chat-input button:hover {
-    background-color: #0288d1;
-  }
-  
-  .toggle-chatbot {
-    padding: 15px 25px;
-    background-color: #03a9f4;
-    color: white;
-    border: none;
-    border-radius: 20px;
-    cursor: pointer;
-    position: fixed;
-    bottom: 10px; /* Adjusted distance from the bottom */
-    right: 19px; /* Distance from the right */
-    z-index: 1000; /* Ensure button is on top */
-  }
-  
-  .toggle-chatbot:hover {
-    background-color: #0288d1;
-  }
-  
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: rgba(255, 255, 255, 0);
+  position: relative;
+  height: 100vh;
+  overflow: hidden;
+}
+
+
+.chat-container {
+  width: 300px;
+  height: 600px;
+  background: linear-gradient(to bottom, #dc33a965, #3232fb65); /* Gradient background for the container */
+  border-radius: 20px;
+  display: none; /* Initially hidden */
+  backdrop-filter: blur(20px);
+  position: fixed; /* Fixed position */
+  bottom: 60px; /* Distance from the bottom */
+  right: 30px; /* Distance from the right */
+  flex-direction: column;
+  z-index: 0; /* Ensure chatbot is on top */
+}
+
+/* For Webkit browsers (Chrome, Safari) */
+.chat-container::-webkit-scrollbar {
+  width: 4px; /* Width of the scrollbar */
+}
+
+/* Hide the track */
+/* .chat-container::-webkit-scrollbar-track {
+  background: transparent; /* Set track background to transparent */
+
+
+/* Style the scrollbar thumb */
+.chat-container::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.6); /* Color of the scrollbar thumb */
+  border-radius: 100px; /* Make it pill-shaped with a higher border-radius */
+  height: 10px; /* Set a specific height for the thumb */
+  display: none;
+}
+
+.chat-container::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.9); /* Color when hovering over the thumb */
+}
+
+/* For Firefox */
+.chat-container {
+  scrollbar-width: thin; /* Use 'thin' for a thinner scrollbar */
+  scrollbar-color: rgba(255, 255, 255, 0.6) transparent; /* Thumb color and track color (transparent) */
+}
+
+/* Optional: Ensure the height of the thumb in Firefox is similar */
+.chat-container::-moz-scrollbar-thumb {
+  border-radius: 20px; /* Pill shape for Firefox */
+  height: 30px; /* Set a specific height for the thumb */
+}
+
+
+
+.chat-logo {
+  width: 50px; /* Adjust the size */
+  height: auto;
+  position: absolute;
+  top: 10px; /* Position it inside the chat container */
+  left: 10px;
+  z-index: 10; /* Ensure it appears on top */
+}
+
+.chat-box {
+  flex-grow: 4;
+  padding: 30px;
+  overflow-y: auto;
+  border-bottom: 1px solid #ec090900;
+  z-index: 1;
+}
+
+.chat-message {
+  margin: 10px 0;
+  padding: 10px;
+  border-radius: 10px;
+  color:  rgba(255, 255, 255, 0.9);
+  max-width: 80%;
+  clear: both; /* Clear floats */
+}
+
+.bot {
+  background: linear-gradient(to left, #dc33a980, #3232fb41); /* Gradient background for bot messages */
+  align-self: flex-end; /* Align bot messages to the right */
+  margin-right: auto; /* Push to right */
+}
+
+.user {
+  background: linear-gradient(to right, #dc33a980, #3232fb41); /* Gradient background for user messages */
+  align-self: flex-start; /* Align user messages to the left */
+  margin-left: auto; /* Push to right */
+}
+
+.chat-options {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-top: 10px;
+}
+
+.option-button {
+  padding: 8px 15px; /* Smaller buttons */
+  font-size: 14px;
+  border: none;
+  background: linear-gradient(to right, #dc33a9b7, #3232fbb6); /* Gradient background for option buttons */
+  color:  rgba(255, 255, 255, 0.9);
+  border-radius: 15px;
+  cursor: pointer;
+  margin: 5px 0;
+  width: auto;
+  text-align: left;
+  margin-left: 5px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Soft shadow */
+  transition: background 0.3s ease, box-shadow 0.3s ease;
+}
+
+.option-button:hover {
+  background: linear-gradient(to left, #dc33a9, #3332fb); /* Reversed gradient on hover */
+}
+
+.chat-input {
+  padding: 10px;
+  display: flex;
+  border-top: 1px solid #00000000;
+}
+
+.chat-input input {
+  flex-grow: 1;
+  padding: 10px;
+  border: none;
+  border-radius: 20px;
+  background-color: #3232fb6e;
+  color:  rgba(255, 255, 255, 0.9);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  outline: none;
+}
+
+.chat-input input::placeholder {
+  color: rgba(255, 255, 255, 0.7); /* Set the placeholder color (white with some transparency) */
+}
+
+.chat-input button {
+  padding: 10px 20px;
+  width: 88px;
+  height: 45px;
+  border: none;
+  background: linear-gradient(to right, #dc33a9b7, #3232fbb6); /* Gradient from #dc33a9 to #3332fb */
+  backdrop-filter: blur(20px);
+  color: white;
+  border-radius: 20px;
+  margin-left: 10px;
+  cursor: pointer;
+}
+
+.chat-input button:hover {
+  background: linear-gradient(to right, #3332fb, #dc33a9); /* Gradient from #3332fb to #dc33a9 */
+}
+
+.toggle-chatbot {
+  padding: 15px 25px;
+  background: linear-gradient(to right, #dc33a9, #3332fb); /* Gradient from #dc33a9 to #3332fb */
+  color: white;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  position: fixed;
+  bottom: 0px; /* Adjusted distance from the bottom */
+  right: 0px; /* Distance from the right */
+  z-index: 1000; /* Ensure button is on top */
+  width: 90px; /* Increase the width */
+  height: 50px; /* Increase the height */
+}
+
+.toggle-chatbot:hover {
+  background: linear-gradient(to right, #3332fb, #dc33a9); /* Gradient from #3332fb to #dc33a9 */
+}
