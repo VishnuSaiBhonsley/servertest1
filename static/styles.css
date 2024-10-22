@@ -1,4 +1,4 @@
-* {
+*{
   box-sizing: border-box;
   margin: 0;
   padding: 0;
@@ -14,57 +14,58 @@ body {
 
 
 .chat-container {
+  /* ... your existing styles ... */
+  position: fixed; 
+  bottom: 60px;
+  right: 30px;
   width: 300px;
   height: 600px;
-  background: linear-gradient(to bottom, #dc33a965, #3232fb65); /* Gradient background for the container */
+  background: linear-gradient(to bottom, #dc33a965, #3232fb65);
   border-radius: 20px;
   display: none; /* Initially hidden */
   backdrop-filter: blur(20px);
-  position: fixed; /* Fixed position */
-  bottom: 60px; /* Distance from the bottom */
-  right: 30px; /* Distance from the right */
   flex-direction: column;
-  z-index: 0; /* Ensure chatbot is on top */
+  z-index: 0;
+  transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94); /* Add transition for smooth animation */
+  transform: translateY(300px); /* Start offscreen */
+  will-change: transform;
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.452);
 }
 
-/* For Webkit browsers (Chrome, Safari) */
-.chat-container::-webkit-scrollbar {
-  width: 4px; /* Width of the scrollbar */
+.slideIn {
+  animation: slideIn 0.4s ease-in-out; /* Define the animation */
+  transform: translateY(0); /* Move to the final position */
 }
 
-/* Hide the track */
-/* .chat-container::-webkit-scrollbar-track {
-  background: transparent; /* Set track background to transparent */
-
-
-/* Style the scrollbar thumb */
-.chat-container::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.6); /* Color of the scrollbar thumb */
-  border-radius: 100px; /* Make it pill-shaped with a higher border-radius */
-  height: 10px; /* Set a specific height for the thumb */
-  display: none;
+@keyframes slideIn {
+  from {
+    transform: translateY(100%); /* Start offscreen */
+    opacity: 0; /* Fade in from transparent */
+  }
+  to {
+    transform: translateY(0); /* Move to the final position */
+    opacity: 1; /* Fully visible at the end */
+  }
 }
 
-.chat-container::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.9); /* Color when hovering over the thumb */
+/* For hiding: */
+.slideOut {
+  animation: slideOut 0.4s ease-in-out; /* Define the animation */
 }
 
-/* For Firefox */
-.chat-container {
-  scrollbar-width: thin; /* Use 'thin' for a thinner scrollbar */
-  scrollbar-color: rgba(255, 255, 255, 0.6) transparent; /* Thumb color and track color (transparent) */
+@keyframes slideOut {
+  from {
+    transform: translateY(0); /* Start on-screen */
+    opacity: 1; 
+  }
+  to {
+    transform: translateY(100%); /* Move offscreen */
+    opacity: 0;
+  }
 }
-
-/* Optional: Ensure the height of the thumb in Firefox is similar */
-.chat-container::-moz-scrollbar-thumb {
-  border-radius: 20px; /* Pill shape for Firefox */
-  height: 30px; /* Set a specific height for the thumb */
-}
-
-
 
 .chat-logo {
-  width: 50px; /* Adjust the size */
+  width: auto; /* Adjust the size */
   height: auto;
   position: absolute;
   top: 10px; /* Position it inside the chat container */
@@ -77,16 +78,35 @@ body {
   padding: 30px;
   overflow-y: auto;
   border-bottom: 1px solid #ec090900;
-  z-index: 1;
+  z-index: 10;
+  scrollbar-width: none;
+  scrollbar-color: rgba(255, 255, 255, 0.6) transparent;
 }
+
 
 .chat-message {
   margin: 10px 0;
   padding: 10px;
   border-radius: 10px;
-  color:  rgba(255, 255, 255, 0.9);
+  color: rgba(255, 255, 255, 0.904);
   max-width: 80%;
   clear: both; /* Clear floats */
+  opacity: 0; /* Start hidden */
+  transform: translateY(20px); /* Start slightly below */
+  animation: fadeInUp 0.5s forwards; /* Apply fade in and slide up animation */
+  box-shadow: 2px 5px 5px rgba(0, 0, 0, 0.397); /* Add a subtle box shadow on hover */
+}
+
+/* Animation keyframes for fade in and slide up */
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .bot {
@@ -95,10 +115,60 @@ body {
   margin-right: auto; /* Push to right */
 }
 
+.typing-indicator {
+  display: inline-block;
+  position: relative; /* Position the dots */
+  height: 10px; /* Adjust height as needed */
+  width: 30px; /* Adjust width as needed */
+  margin: 0px; /* Add spacing around the indicator */
+}
+
+.typing-indicator .dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  background-color: #ffffff9a; /* Choose your dot color */
+  border-radius: 50%;
+  position: absolute;
+  bottom: 0; /* Position dots at the bottom */
+}
+
+.typing-indicator .dot:nth-child(1) {
+  left: 0;
+  animation: bounce 1s infinite;
+}
+
+.typing-indicator .dot:nth-child(2) {
+  left: 10px; /* Adjust spacing between dots */
+  animation: bounce 1s infinite 0.2s; /* Delay the second dot's animation */
+}
+
+.typing-indicator .dot:nth-child(3) {
+  left: 20px; /* Adjust spacing between dots */
+  animation: bounce 1s infinite 0.4s; /* Delay the third dot's animation */
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+
+
 .user {
   background: linear-gradient(to right, #dc33a980, #3232fb41); /* Gradient background for user messages */
   align-self: flex-start; /* Align user messages to the left */
   margin-left: auto; /* Push to right */
+}
+
+/* Hover effect for chat messages */
+.chat-message:hover {
+  transform: scale(1.02); /* Slightly enlarge on hover */
+  transition: transform 0.2s; /* Smooth transition */
 }
 
 .chat-options {
@@ -106,6 +176,7 @@ body {
   flex-direction: column;
   align-items: flex-start;
   margin-top: 10px;
+  animation: fadeInUp 0.5s forwards;
 }
 
 .option-button {
@@ -122,10 +193,13 @@ body {
   margin-left: 5px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Soft shadow */
   transition: background 0.3s ease, box-shadow 0.3s ease;
+  animation: fadeInUp 0.5s forwards;
 }
 
 .option-button:hover {
   background: linear-gradient(to left, #dc33a9, #3332fb); /* Reversed gradient on hover */
+  transform: translateY(-1px);  /* Move left slightly on hover */
+  box-shadow: 2px 5px 5px rgba(0, 0, 0, 0.603); /* Add a subtle box shadow on hover */
 }
 
 .chat-input {
@@ -143,10 +217,11 @@ body {
   color:  rgba(255, 255, 255, 0.9);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   outline: none;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.281);
 }
 
 .chat-input input::placeholder {
-  color: rgba(255, 255, 255, 0.7); /* Set the placeholder color (white with some transparency) */
+  color: rgba(255, 255, 255, 0.795); /* Set the placeholder color (white with some transparency) */
 }
 
 .chat-input button {
@@ -164,6 +239,8 @@ body {
 
 .chat-input button:hover {
   background: linear-gradient(to right, #3332fb, #dc33a9); /* Gradient from #3332fb to #dc33a9 */
+  transform: translateY(-1px);  /* Move left slightly on hover */
+  box-shadow: 2px 5px 5px rgba(0, 0, 0, 0.603); /* Add a subtle box shadow on hover */
 }
 
 .toggle-chatbot {
@@ -171,7 +248,7 @@ body {
   background: linear-gradient(to right, #dc33a9, #3332fb); /* Gradient from #dc33a9 to #3332fb */
   color: white;
   border: none;
-  border-radius: 30px;
+  border-radius: 50px;
   cursor: pointer;
   position: fixed;
   bottom: 0px; /* Adjusted distance from the bottom */
@@ -179,8 +256,18 @@ body {
   z-index: 1000; /* Ensure button is on top */
   width: 90px; /* Increase the width */
   height: 50px; /* Increase the height */
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.toggle-chatbot img {
+  width: 100%; /* Make the logo fit the button's width */
+  height: 40px; /* Maintain aspect ratio */
+  bottom: auto;
+
 }
 
 .toggle-chatbot:hover {
   background: linear-gradient(to right, #3332fb, #dc33a9); /* Gradient from #3332fb to #dc33a9 */
+  transform: translateY(-5px);  /* Move left slightly on hover */
+  box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.603); /* Add a subtle box shadow on hover */
 }

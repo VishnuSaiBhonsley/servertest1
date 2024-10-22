@@ -102,11 +102,14 @@ function handleKeyPress(event) {
 
 // Function to generate bot reply based on user input
 function botReply(userText) {
+  const typingIndicator = createTypingAnimation();
+  chatBox.appendChild(typingIndicator);
   setTimeout(() => {
     // Check for predefined responses
     const botResponse = botResponses[userText];
 
     if (botResponse) {
+      removeTypingAnimation(typingIndicator);
       addMessage("bot", botResponse.response);
 
       // If there are options, show them
@@ -125,6 +128,9 @@ async function makeHttpRequest(userText) {
   if (!sectionId) {
     sectionId = generateSectionId(); // Generate and assign section ID if not already generated
   }
+
+  const typingIndicator = createTypingAnimation();
+  chatBox.appendChild(typingIndicator);
 
   try {
     const response = await fetch('http://192.168.55.89:5000/ask', { // Update to your API endpoint
@@ -149,6 +155,7 @@ async function makeHttpRequest(userText) {
 
     // Access the 'response' property correctly
     if (data.response) {
+      removeTypingAnimation(typingIndicator);
       addMessage("bot", data.response); // Display the bot's response
 
       // Show the first option by default if available in botResponses
@@ -164,6 +171,22 @@ async function makeHttpRequest(userText) {
     addMessage("bot", "Sorry, I could not reach the server. Please try again later.");
   }
 }
+
+
+function createTypingAnimation() {
+  const typingIndicator = document.createElement("div");
+  typingIndicator.classList.add("typing-indicator");
+  typingIndicator.innerHTML = '<span class="dot"></span><span class="dot"></span><span class="dot"></span>';
+  return typingIndicator;
+}
+
+function removeTypingAnimation(typingIndicator) {
+  // Remove the specific typing animation element
+  if (typingIndicator) {
+    typingIndicator.remove();
+  }
+}
+
 
 // Scroll to the bottom of the chat
 function scrollToBottom() {
