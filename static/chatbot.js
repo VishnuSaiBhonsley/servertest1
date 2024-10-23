@@ -6,6 +6,9 @@ const userInput = document.getElementById("user-input");
 // Initialize a variable to store the section ID
 let sectionId = "";
 
+// List to track previously selected user inputs
+let userSelectedOptions = [];
+
 // Function to generate a random section ID
 function generateSectionId() {
   return 'section-' + Math.random().toString(36).substr(2, 9); // Generates a random alphanumeric ID
@@ -25,7 +28,7 @@ let botResponses = {};
 // Function to fetch bot responses (now corrected to be asynchronous)
 async function fetchBotResponses(userText) {
   try {
-    const response = await fetch('http://192.168.55.89:5000/getresponses', { // Update to your API endpoint
+    const response = await fetch('http://192.168.55.58:5000/getresponses', { // Update to your API endpoint
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -55,7 +58,11 @@ function addMessage(sender, text) {
 // Function to show button options for user to select
 function showOptions(options) {
   chatOptions.innerHTML = ""; // Clear previous options
-  options.forEach(option => {
+
+  // Filter options to exclude those that have already been selected
+  const filteredOptions = options.filter(option => !userSelectedOptions.includes(option));
+
+  filteredOptions.forEach(option => {
     const button = document.createElement("button");
     button.classList.add("option-button");
     button.textContent = option;
@@ -68,6 +75,10 @@ function showOptions(options) {
 async function handleOptionClick(option) {
   addMessage("user", option);
   chatOptions.innerHTML = ""; // Hide options after user clicks one
+
+  // Add the selected option to the list of user-selected options
+  userSelectedOptions.push(option);
+
   await fetchBotResponses(option.toLowerCase()); // Await fetch response
   botReply(option.toLowerCase());
 }
@@ -79,6 +90,10 @@ async function sendMessage() {
 
   addMessage("user", userText);
   userInput.value = ""; // Clear input field
+
+  // Add the typed message to the list of user-selected options
+  userSelectedOptions.push(userText);
+
   await fetchBotResponses(userText); // Await the response from fetchBotResponses
 
   // Check for matches with keywords in botResponses
@@ -133,7 +148,7 @@ async function makeHttpRequest(userText) {
   chatBox.appendChild(typingIndicator);
 
   try {
-    const response = await fetch('http://192.168.55.89:5000/ask', { // Update to your API endpoint
+    const response = await fetch('http://192.168.55.58:5000/ask', { // Update to your API endpoint
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -172,7 +187,6 @@ async function makeHttpRequest(userText) {
   }
 }
 
-
 function createTypingAnimation() {
   const typingIndicator = document.createElement("div");
   typingIndicator.classList.add("typing-indicator");
@@ -186,7 +200,6 @@ function removeTypingAnimation(typingIndicator) {
     typingIndicator.remove();
   }
 }
-
 
 // Scroll to the bottom of the chat
 function scrollToBottom() {
